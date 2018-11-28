@@ -1,10 +1,14 @@
-# tutorials
-P4 language tutorials, adapted for the Data Plane Programming Course DVAD41
+# Tutorials
+**P4 language tutorials, adapted for the Data Plane Programming Course DVAD41**
 
 We've adapted  a set of exercises to help you get started with P4 programming. They are a set of basic exercises,
 some exercises focus on load balancing in data center networks and some on network monitoring.
 
-The exercises have been originally developed for SIGCOMM 2017 and P4D2 2018 EAST. More exercises are available from 
+The exercises have been originally developed for SIGCOMM 2017 and P4D2 2018 EAST. 
+
+The exercises are in the folder /home/p4/tutorials/exercises. On this git, they are located 
+[here](P4D2_2018_East/exercises/)
+More exercises are available from 
 
  [Official P4 Github](https://github.com/p4lang/tutorials)
 and 
