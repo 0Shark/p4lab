@@ -139,4 +139,5 @@ mn -c
 
 ## Next Steps
 
-Congratulations, your implementation works! 
+Congratulations, your implementation works! Move on to the next
+exercise, where we look into congestion aware data center load balancing: [HULA](../hula).
