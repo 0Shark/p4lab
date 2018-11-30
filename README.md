@@ -14,9 +14,31 @@ More exercises are available from
 and 
  [Stanford CS344 class](https://github.com/CS344-Stanford-18)
 
+## Obtaining required software
+
+In order to complete the exercises, you will need to either build a
+virtual machine or install several dependencies.
+
+To build the virtual machine:
+- Install [Vagrant](https://vagrantup.com) and [VirtualBox](https://virtualbox.org)
+- `cd vm`
+- `vagrant up`
+- Log in with username `p4` and password `p4` and issue the command `sudo shutdown -r now`
+- When the machine reboots, you should have a graphical desktop machine with the required
+software pre-installed.
+
+To install dependencies by hand, please reference the [vm](../vm) installation scripts.
+They contain the dependencies, versions, and installation procedure.
+You can run them directly on an Ubuntu 16.04 machine:
+- `sudo ./root-bootstrap.sh`
+- `sudo ./user-bootstrap.sh`
+
+
+
+
 **Make sure that you edit [env.sh](env.sh) to point to your local copy of
   [bmv2](https://github.com/p4lang/behavioral-model) and
   [p4c-bm](https://github.com/p4lang/p4c-bm). You may want to follow the
   instructions
   [here](https://github.com/p4lang/tutorials/tree/master/SIGCOMM_2015#obtaining-required-software)
-  to make sure that your environment is setup correctly.**
+  to make sure that your environment is setup correctly. If you used vagrant up, it should work automatically and you do not need to edit the env.**
