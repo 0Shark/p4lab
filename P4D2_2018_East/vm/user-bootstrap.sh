@@ -116,7 +116,7 @@ cd ..
 sudo pip install crcmod
 git clone https://git.cse.kau.se/courses/dvad40/vt19
 sudo mv vt19 /home/p4
-sudo chown -R p4:p4 /home/p4/tutorials
+sudo chown -R p4:p4 /home/p4/vt19
 
 # Emacs
 sudo cp p4_16-mode.el /usr/share/emacs/site-lisp/
