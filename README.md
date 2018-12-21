@@ -42,3 +42,8 @@ You can run them directly on an Ubuntu 16.04 machine:
   instructions
   [here](https://github.com/p4lang/tutorials/tree/master/SIGCOMM_2015#obtaining-required-software)
   to make sure that your environment is setup correctly. If you used vagrant up, it should work automatically and you do not need to edit the env.**
+
+## P4 Cheat Sheet
+
+A very nice summary of P4 commands and syntax is provided in the
+ [P4 CheatSheet](P4D2_2018_East/p4-cheat-sheet.pdf)
