@@ -63,7 +63,7 @@ server. In `h2`'s xterm, start the server:
    ```
    And to delete all pcaps, build files, and logs:
    ```bash
-   make clean
+   sudo make clean
    ```
 
 The message was not received because each switch is programmed

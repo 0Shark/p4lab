@@ -158,7 +158,10 @@ these instances:
 ```bash
 make stop
 ```
-
+   And to delete all pcaps, build files, and logs:
+   ```bash
+   sudo make clean
+   ```
 ## Next Steps
 
 Congratulations, your implementation works! Move onto the next assignment
