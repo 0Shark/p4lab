@@ -46,4 +46,4 @@ You can run them directly on an Ubuntu 16.04 machine:
 ## P4 Cheat Sheet
 
 A very nice summary of P4 commands and syntax is provided in the
- [P4 CheatSheet](P4D2_2018_East/p4-cheat-sheet.pdf)
+ [P4 CheatSheet](P4Lab/p4-cheat-sheet.pdf)
