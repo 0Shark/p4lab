@@ -6,8 +6,8 @@ some exercises focus on load balancing in data center networks and some on netwo
 
 The exercises have been originally developed for SIGCOMM 2017 and P4D2 2018 EAST. 
 
-The exercises are in the folder /home/p4/vt19/P4Lab/exercises. On this git, they are located 
-[here](P4Lab/exercises/).
+The exercises are in the folder /home/p4/vt19/P4lab/exercises. On this git, they are located 
+[here](P4lab/exercises/).
 More exercises are available from 
 
  [Official P4 Github](https://github.com/p4lang/tutorials)
@@ -46,4 +46,4 @@ You can run them directly on an Ubuntu 16.04 machine:
 ## P4 Cheat Sheet
 
 A very nice summary of P4 commands and syntax is provided in the
- [P4 CheatSheet](P4Lab/p4-cheat-sheet.pdf)
+ [P4 CheatSheet](P4lab/p4-cheat-sheet.pdf)
