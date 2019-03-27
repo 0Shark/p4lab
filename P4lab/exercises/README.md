@@ -17,4 +17,4 @@ programming, organized into a set of modules:
 * [HULA](./hula)
 
 3. In Network Monitoring, Control and Caching (DVAD43)
-* tbd.
+* [MRI - Telemetry collection](./mri)
