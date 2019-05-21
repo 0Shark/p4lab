@@ -41,7 +41,7 @@ switch in Mininet to test its behavior.
    * The hosts are assigned IPs of `10.0.1.1`, `10.0.2.2`, etc
      (`10.0.<Switchid>.<hostID>`).
    * The control plane programs the P4 tables in each switch based on
-     `sx-runtime.json`
+     `sx-runtime.txt`
 
 2. We want to send a low rate traffic from `h1` to `h2` and a high
    rate iperf traffic from `h11` to `h22`.  The link between `s1` and
@@ -93,7 +93,7 @@ with parameters supplied by the control plane as part of the rule.
 In this exercise, the control plane logic has already been
 implemented.  As part of bringing up the Mininet instance, the
 `make` script will install packet-processing rules in the tables of
-each switch. These are defined in the `sX-runtime.json` files, where
+each switch. These are defined in the `sX-runtime.txt` files, where
 `X` corresponds to the switch number.
 
 ## Step 2: Implement MRI
@@ -213,7 +213,7 @@ There are several ways that problems might manifest:
    error emitted from the compiler and stop.
 
 2. `mri.p4` compiles but does not support the control plane rules in
-   the `sX-runtime.json` files that `make` tries to install using a
+   the `sX-runtime.txt` files that `make` tries to install using a
    Python controller. In this case, `make` will log the controller
    output in the `logs` directory.  Use these error messages to fix
    your `mri.p4` implementation.
@@ -241,7 +241,3 @@ these instances:
 make stop
 ```
 
-## Next Steps
-
-Congratulations, your implementation works! Move on to [Source
-Routing](../source_routing).
