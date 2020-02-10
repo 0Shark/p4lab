@@ -10,7 +10,7 @@ apt-get update
 
 KERNEL=$(uname -r)
 DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade
-apt-get install -y --no-install-recommends \
+apt-get install -y --no-install-recommends --fix-missing\
   atom \
   autoconf \
   automake \
@@ -55,10 +55,12 @@ apt-get install -y --no-install-recommends \
   python-dev \
   python-ipaddr \
   python-pip \
+  python-psutil \
   python-scapy \
   python-setuptools \
   sublime-text-installer \
   tcpdump \
+  ubuntu-desktop \
   unzip \
   vim \
   wget \
@@ -76,7 +78,7 @@ cp /home/vagrant/p4-logo.png .
 rm lubuntu-default-wallpaper.png
 ln -s p4-logo.png lubuntu-default-wallpaper.png
 rm /home/vagrant/p4-logo.png
-cd /home/vagrant
+cd ~
 sed -i s@#background=@background=/usr/share/lubuntu/wallpapers/1604-lubuntu-default-wallpaper.png@ /etc/lightdm/lightdm-gtk-greeter.conf
 
 # Disable screensaver

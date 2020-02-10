@@ -1,25 +1,23 @@
 #!/bin/bash
 
-# Print script commands.
-set -x
-# Exit on errors.
-set -e
+# Print script commands and exit on errors.
+set -xe
 
-BMV2_COMMIT="7e25eeb19d01eee1a8e982dc7ee90ee438c10a05"
-PI_COMMIT="219b3d67299ec09b49f433d7341049256ab5f512"
-P4C_COMMIT="48a57a6ae4f96961b74bd13f6bdeac5add7bb815"
+#Src 
+BMV2_COMMIT="b447ac4c0cfd83e5e72a3cc6120251c1e91128ab"  # August 10, 2019
+PI_COMMIT="41358da0ff32c94fa13179b9cee0ab597c9ccbcc"    # August 10, 2019
+P4C_COMMIT="69e132d0d663e3408d740aaf8ed534ecefc88810"   # August 10, 2019
 PROTOBUF_COMMIT="v3.2.0"
 GRPC_COMMIT="v1.3.2"
 
+#Get the number of cores to speed up the compilation process
 NUM_CORES=`grep -c ^processor /proc/cpuinfo`
 
-# Mininet
+# --- Mininet --- #
 git clone git://github.com/mininet/mininet mininet
-cd mininet
-sudo ./util/install.sh -nwv
-cd ..
+sudo ./mininet/util/install.sh -nwv
 
-# Protobuf
+# --- Protobuf --- #
 git clone https://github.com/google/protobuf.git
 cd protobuf
 git checkout ${PROTOBUF_COMMIT}
@@ -32,12 +30,12 @@ make -j${NUM_CORES}
 sudo make install
 sudo ldconfig
 unset CFLAGS CXXFLAGS LDFLAGS
-# force install python module
+# Force install python module
 cd python
 sudo python setup.py install
 cd ../..
 
-# gRPC
+# --- gRPC --- #
 git clone https://github.com/grpc/grpc.git
 cd grpc
 git checkout ${GRPC_COMMIT}
@@ -51,7 +49,7 @@ cd ..
 # Install gRPC Python Package
 sudo pip install grpcio
 
-# BMv2 deps (needed by PI)
+# --- BMv2 deps (needed by PI) --- #
 git clone https://github.com/p4lang/behavioral-model.git
 cd behavioral-model
 git checkout ${BMV2_COMMIT}
@@ -67,7 +65,7 @@ cd ..
 sudo rm -rf $tmpdir
 cd ..
 
-# PI/P4Runtime
+# --- PI/P4Runtime --- #
 git clone https://github.com/p4lang/PI.git
 cd PI
 git checkout ${PI_COMMIT}
@@ -79,7 +77,7 @@ sudo make install
 sudo ldconfig
 cd ..
 
-# Bmv2
+# --- Bmv2 --- #
 cd behavioral-model
 ./autogen.sh
 ./configure --enable-debugger --with-pi
@@ -93,11 +91,10 @@ cd targets/simple_switch_grpc
 make -j${NUM_CORES}
 sudo make install
 sudo ldconfig
-cd ..
-cd ..
-cd ..
+cd ../../..
 
-# P4C
+
+# --- P4C --- #
 git clone https://github.com/p4lang/p4c
 cd p4c
 git checkout ${P4C_COMMIT}
@@ -105,20 +102,25 @@ git submodule update --init --recursive
 mkdir -p build
 cd build
 cmake ..
-make -j${NUM_CORES}
-make -j${NUM_CORES} check
+# The command 'make -j${NUM_CORES}' works fine for the others, but
+# with 2 GB of RAM for the VM, there are parts of the p4c build where
+# running 2 simultaneous C++ compiler runs requires more than that
+# much memory.  Things work better by running at most one C++ compilation
+# process at a time.
+make -j1
 sudo make install
 sudo ldconfig
-cd ..
-cd ..
+cd ../..
 
-# Tutorials
+# --- Tutorials --- #
 sudo pip install crcmod
-git clone https://git.cse.kau.se/courses/dvad40/vt19
-sudo mv vt19 /home/p4
-sudo chown -R p4:p4 /home/p4/vt19
+git clone https://github.com/p4lang/tutorials
+sudo mv tutorials /home/p4
+sudo chown -R p4:p4 /home/p4/tutorials
+# Install grip for offline markdown rendering
+sudo pip install grip
 
-# Emacs
+# --- Emacs --- #
 sudo cp p4_16-mode.el /usr/share/emacs/site-lisp/
 sudo mkdir /home/p4/.emacs.d/
 echo "(autoload 'p4_16-mode' \"p4_16-mode.el\" \"P4 Syntax.\" t)" > init.el
@@ -127,22 +129,22 @@ sudo mv init.el /home/p4/.emacs.d/
 sudo ln -s /usr/share/emacs/site-lisp/p4_16-mode.el /home/p4/.emacs.d/p4_16-mode.el
 sudo chown -R p4:p4 /home/p4/.emacs.d/
 
-# Vim
-cd /home/vagrant
+# --- Vim --- #
+cd ~  
 mkdir .vim
 cd .vim
 mkdir ftdetect
 mkdir syntax
 echo "au BufRead,BufNewFile *.p4      set filetype=p4" >> ftdetect/p4.vim
-echo "set bg=dark" >> /home/vagrant/.vimrc
-sudo mv /home/vagrant/.vimrc /home/p4/.vimrc
-cp /home/vagrant/p4.vim syntax/p4.vim
-cd /home/vagrant
+echo "set bg=dark" >> ~/.vimrc
+sudo mv ~/.vimrc /home/p4/.vimrc
+cp ~/p4.vim syntax/p4.vim
+cd ~
 sudo mv .vim /home/p4/.vim
 sudo chown -R p4:p4 /home/p4/.vim
 sudo chown p4:p4 /home/p4/.vimrc
 
-# Adding Desktop icons
+# --- Adding Desktop icons --- #
 DESKTOP=/home/${USER}/Desktop
 mkdir -p ${DESKTOP}
 
