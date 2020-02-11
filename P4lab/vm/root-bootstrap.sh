@@ -23,6 +23,7 @@ apt-get install -y --no-install-recommends --fix-missing\
   emacs24 \
   flex \
   git \
+  gnutls-bin \
   libboost-dev \
   libboost-filesystem-dev \
   libboost-iostreams1.58-dev \
