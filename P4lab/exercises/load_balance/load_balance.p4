@@ -99,7 +99,7 @@ control MyIngress(inout headers hdr,
                   inout standard_metadata_t standard_metadata) {
 
     action drop() {
-        mark_to_drop();
+        mark_to_drop(standard_metadata);
     }
     action set_ecmp_select(bit<16> ecmp_base, bit<32> ecmp_count) {
         /* TODO: hash on 5-tuple and save the hash result in meta.ecmp_select 
