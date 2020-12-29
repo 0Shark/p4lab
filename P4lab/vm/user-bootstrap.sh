@@ -32,7 +32,7 @@ sudo ldconfig
 unset CFLAGS CXXFLAGS LDFLAGS
 # Force install python module
 cd python
-sudo python setup.py install
+sudo python setup.py install 
 cd ../..
 
 # --- gRPC --- #
@@ -47,7 +47,7 @@ sudo ldconfig
 unset LDFLAGS
 cd ..
 # Install gRPC Python Package
-sudo pip install grpcio
+sudo  pip install grpcio 
 
 # --- BMv2 deps (needed by PI) --- #
 git clone https://github.com/p4lang/behavioral-model.git
@@ -113,14 +113,14 @@ sudo ldconfig
 cd ../..
 
 # --- Tutorials --- #
-sudo pip install crcmod
+sudo  pip install crcmod
 
 
 git clone https://git.cse.kau.se/courses/dvad40/vt19
 sudo mv vt19 /home/p4
 sudo chown -R p4:p4 /home/p4/vt19
 # Install grip for offline markdown rendering
-sudo pip install grip
+#sudo -H pip install grip --upgrade pip
 
 # --- Emacs --- #
 sudo cp p4_16-mode.el /usr/share/emacs/site-lisp/
