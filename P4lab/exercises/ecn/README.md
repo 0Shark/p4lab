@@ -40,7 +40,7 @@ network in Mininet to test its behavior.
    * The hosts are assigned IPs of `10.0.1.1`, `10.0.2.2`, etc
      (`10.0.<Switchid>.<hostID>`).
    * The control plane programs the P4 tables in each switch based on
-     `sx-commands.txt`
+     `sx-runtime.json`
 
 2. We want to send a low rate traffic from `h1` to `h2` and a high
 rate iperf traffic from `h11` to `h22`.  The link between `s1` and
@@ -103,7 +103,7 @@ A complete `ecn.p4` will contain the following components:
 	1. Set the egress port for the next hop.
 	2. Update the ethernet destination address with the address of
            the next hop.
-	3. Update the ethernet source address with the address of the switch. 
+	3. Update the ethernet source address with the address of the switch.
 	4. Decrement the TTL.
 5. An egress control block that checks the ECN and
 `standard_metadata.enq_qdepth` and sets the ipv4.ecn.
@@ -164,13 +164,13 @@ There are several ways that problems might manifest:
 1. `ecn.p4` fails to compile.  In this case, `make` will report the
    error emitted from the compiler and stop.
 2. `ecn.p4` compiles but does not support the control plane rules in
-   the `sX-commands.txt` files that `make` tries to install using
-   the BMv2 CLI.  In this case, `make` will log the CLI tool output 
+   the `sX-runtime.json` files that `make` tries to install using
+   a Python controller. In this case, `make` will log the controller output
    in the `logs` directory. Use these error messages to fix your `ecn.p4`
    implementation.
 3. `ecn.p4` compiles, and the control plane rules are installed, but
    the switch does not process packets in the desired way.  The
-   `/tmp/p4s.<switch-name>.log` files contain trace messages
+   `logs/sX.log` files contain trace messages
    describing how each switch processes each packet.  The output is
    detailed and can help pinpoint logic errors in your implementation.
    The `build/<switch-name>-<interface-name>.pcap` also contains the
@@ -190,11 +190,10 @@ these instances:
 ```bash
 make stop
 ```
-   And to delete all pcaps, build files, and logs:
-   ```bash
-   sudo make clean
-   ```
-## Next Steps
+## Relevant Documentation
 
-Congratulations, your implementation works! This finishes the exercises for the introductory part. Move on to the next
-exercise, where we look into data center load balancing: [Loadbalancing](../load_balance).
+The documentation for P4_16 and P4Runtime is available [here](https://p4.org/specs/)
+
+All excercises in this repository use the v1model architecture, the documentation for which is available at:
+1. The BMv2 Simple Switch target document accessible [here](https://github.com/p4lang/behavioral-model/blob/master/docs/simple_switch.md) talks mainly about the v1model architecture.
+2. The include file `v1model.p4` has extensive comments and can be accessed [here](https://github.com/p4lang/p4c/blob/master/p4include/v1model.p4).

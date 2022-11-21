@@ -1,13 +1,18 @@
-#!/usr/bin/env python
-import sys
-import struct
+#!/usr/bin/env python3
 import os
+import sys
 
-from scapy.all import sniff, sendp, hexdump, get_if_list, get_if_hwaddr
-from scapy.all import Packet, IPOption
-from scapy.all import ShortField, IntField, LongField, BitField, FieldListField, FieldLenField
-from scapy.all import IP, UDP, Raw
+from scapy.all import (
+    FieldLenField,
+    FieldListField,
+    IntField,
+    IPOption,
+    ShortField,
+    get_if_list,
+    sniff
+)
 from scapy.layers.inet import _IPOption_HDR
+
 
 def get_if():
     ifs=get_if_list()
@@ -17,7 +22,7 @@ def get_if():
             iface=i
             break;
     if not iface:
-        print "Cannot find eth0 interface"
+        print("Cannot find eth0 interface")
         exit(1)
     return iface
 
@@ -34,16 +39,16 @@ class IPOption_MRI(IPOption):
                                    IntField("", 0),
                                    length_from=lambda pkt:pkt.count*4) ]
 def handle_pkt(pkt):
-    print "got a packet"
+    print("got a packet")
     pkt.show2()
 #    hexdump(pkt)
     sys.stdout.flush()
 
 
 def main():
-    ifaces = filter(lambda i: 'eth' in i, os.listdir('/sys/class/net/'))
+    ifaces = [i for i in os.listdir('/sys/class/net/') if 'eth' in i]
     iface = ifaces[0]
-    print "sniffing on %s" % iface
+    print("sniffing on %s" % iface)
     sys.stdout.flush()
     sniff(filter="tcp", iface = iface,
           prn = lambda x: handle_pkt(x))

@@ -78,7 +78,7 @@ parser MyParser(packet_in packet,
 ************   C H E C K S U M    V E R I F I C A T I O N   *************
 *************************************************************************/
 
-control MyVerifyChecksum(inout headers hdr, inout metadata meta) {   
+control MyVerifyChecksum(inout headers hdr, inout metadata meta) {
     apply {  }
 }
 
@@ -93,7 +93,7 @@ control MyIngress(inout headers hdr,
     action drop() {
         mark_to_drop(standard_metadata);
     }
-    
+
     action ipv4_forward(macAddr_t dstAddr, egressSpec_t port) {
         standard_metadata.egress_spec = port;
         hdr.ethernet.srcAddr = hdr.ethernet.dstAddr;
@@ -108,12 +108,11 @@ control MyIngress(inout headers hdr,
         actions = {
             ipv4_forward;
             drop;
-            NoAction;
         }
         size = 1024;
-        default_action = NoAction();
+        default_action = drop;
     }
-    
+
     apply {
         if (hdr.ipv4.isValid()) {
             ipv4_lpm.apply();
@@ -132,7 +131,7 @@ control MyEgress(inout headers hdr,
         /*
          * TODO:
          * - if ecn is 1 or 2
-         *   - compare standard_metadata.enq_qdepth with threshold 
+         *   - compare standard_metadata.enq_qdepth with threshold
          *     and set hdr.ipv4.ecn to 3 if larger
          */
     }
@@ -145,8 +144,8 @@ control MyEgress(inout headers hdr,
 control MyComputeChecksum(inout headers hdr, inout metadata meta) {
     apply {
         /* TODO: replace tos with diffserve and ecn */
-	update_checksum(
-	    hdr.ipv4.isValid(),
+        update_checksum(
+            hdr.ipv4.isValid(),
             { hdr.ipv4.version,
               hdr.ipv4.ihl,
               hdr.ipv4.tos,

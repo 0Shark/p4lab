@@ -1,6 +1,6 @@
 
+
 from scapy.all import *
-import sys, os
 
 TYPE_MYTUNNEL = 0x1212
 TYPE_IPV4 = 0x0800

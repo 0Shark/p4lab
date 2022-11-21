@@ -37,11 +37,11 @@ switch in Mininet to test its behavior.
    * compile `mri.p4`, and
    * start a Mininet instance with three switches (`s1`, `s2`, `s3`) configured
      in a triangle. There are 5 hosts. `h1` and `h11` are connected to `s1`.
-     `h2` and `h22` are connected to `s2` and `h3` is connected to `s3`.     
+     `h2` and `h22` are connected to `s2` and `h3` is connected to `s3`.
    * The hosts are assigned IPs of `10.0.1.1`, `10.0.2.2`, etc
      (`10.0.<Switchid>.<hostID>`).
    * The control plane programs the P4 tables in each switch based on
-     `sx-runtime.txt`
+     `sx-runtime.json`
 
 2. We want to send a low rate traffic from `h1` to `h2` and a high
    rate iperf traffic from `h11` to `h22`.  The link between `s1` and
@@ -93,7 +93,7 @@ with parameters supplied by the control plane as part of the rule.
 In this exercise, the control plane logic has already been
 implemented.  As part of bringing up the Mininet instance, the
 `make` script will install packet-processing rules in the tables of
-each switch. These are defined in the `sX-runtime.txt` files, where
+each switch. These are defined in the `sX-runtime.json` files, where
 `X` corresponds to the switch number.
 
 ## Step 2: Implement MRI
@@ -128,7 +128,7 @@ store the switch ID and queue depth, and actions that increment the
 A complete `mri.p4` will contain the following components:
 
 1. Header type definitions for Ethernet (`ethernet_t`), IPv4 (`ipv4_t`),
-   IP Options (`ipv4_option_t`), MRI (`mri_t`), and Switch (`switch_t`). 
+   IP Options (`ipv4_option_t`), MRI (`mri_t`), and Switch (`switch_t`).
 2. Parsers for Ethernet, IPv4, IP Options, MRI, and Switch that will
 populate `ethernet_t`, `ipv4_t`, `ipv4_option_t`, `mri_t`, and
 `switch_t`.
@@ -136,8 +136,8 @@ populate `ethernet_t`, `ipv4_t`, `ipv4_option_t`, `mri_t`, and
 4. An action (called `ipv4_forward`), which will:
 	1. Set the egress port for the next hop.
 	2. Update the ethernet destination address with the address of
-	the next hop.	
-	3. Update the ethernet source address with the address of the switch. 
+	the next hop.
+	3. Update the ethernet source address with the address of the switch.
 	4. Decrement the TTL.
 5. An ingress control that:
     1. Defines a table that will read an IPv4 destination address, and
@@ -213,14 +213,14 @@ There are several ways that problems might manifest:
    error emitted from the compiler and stop.
 
 2. `mri.p4` compiles but does not support the control plane rules in
-   the `sX-runtime.txt` files that `make` tries to install using a
+   the `sX-runtime.json` files that `make` tries to install using a
    Python controller. In this case, `make` will log the controller
    output in the `logs` directory.  Use these error messages to fix
    your `mri.p4` implementation.
 
 3. `mri.p4` compiles, and the control plane rules are installed, but
    the switch does not process packets in the desired way. The
-   `/tmp/p4s.<switch-name>.log` files contain trace messages
+   `logs/sX.log` files contain trace messages
    describing how each switch processes each packet. The output is
    detailed and can help pinpoint logic errors in your implementation.
    The `build/<switch-name>-<interface-name>.pcap` also contains the
@@ -241,3 +241,15 @@ these instances:
 make stop
 ```
 
+## Next Steps
+
+Congratulations, your implementation works! Move on to [Source
+Routing](../source_routing).
+
+## Relevant Documentation
+
+The documentation for P4_16 and P4Runtime is available [here](https://p4.org/specs/)
+
+All excercises in this repository use the v1model architecture, the documentation for which is available at:
+1. The BMv2 Simple Switch target document accessible [here](https://github.com/p4lang/behavioral-model/blob/master/docs/simple_switch.md) talks mainly about the v1model architecture.
+2. The include file `v1model.p4` has extensive comments and can be accessed [here](https://github.com/p4lang/p4c/blob/master/p4include/v1model.p4).

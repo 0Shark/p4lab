@@ -1,18 +1,25 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
-import argparse
-import sys
 import socket
-import random
-import struct
+import sys
+from time import sleep
 
-from scapy.all import sendp, send, hexdump, get_if_list, get_if_hwaddr
-from scapy.all import Packet, IPOption
-from scapy.all import Ether, IP, UDP
-from scapy.all import IntField, FieldListField, FieldLenField, ShortField, PacketListField
+from scapy.all import (
+    IP,
+    UDP,
+    Ether,
+    FieldLenField,
+    IntField,
+    IPOption,
+    Packet,
+    PacketListField,
+    ShortField,
+    get_if_hwaddr,
+    get_if_list,
+    sendp
+)
 from scapy.layers.inet import _IPOption_HDR
 
-from time import sleep
 
 def get_if():
     ifs=get_if_list()
@@ -22,7 +29,7 @@ def get_if():
             iface=i
             break;
     if not iface:
-        print "Cannot find eth0 interface"
+        print("Cannot find eth0 interface")
         exit(1)
     return iface
 
@@ -49,7 +56,7 @@ class IPOption_MRI(IPOption):
 def main():
 
     if len(sys.argv)<3:
-        print 'pass 2 arguments: <destination> "<message>"'
+        print('pass 2 arguments: <destination> "<message>"')
         exit(1)
 
     addr = socket.gethostbyname(sys.argv[1])

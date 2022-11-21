@@ -140,7 +140,7 @@ parser MyParser(packet_in packet,
         *   - Otherwise, transition to parse_swtrace.
         */
         transition accept;
-    }    
+    }
 }
 
 
@@ -148,7 +148,7 @@ parser MyParser(packet_in packet,
 ************   C H E C K S U M    V E R I F I C A T I O N   *************
 *************************************************************************/
 
-control MyVerifyChecksum(inout headers hdr, inout metadata meta) {   
+control MyVerifyChecksum(inout headers hdr, inout metadata meta) {
     apply {  }
 }
 
@@ -163,7 +163,7 @@ control MyIngress(inout headers hdr,
     action drop() {
         mark_to_drop(standard_metadata);
     }
-    
+
     action ipv4_forward(macAddr_t dstAddr, egressSpec_t port) {
         standard_metadata.egress_spec = port;
         hdr.ethernet.srcAddr = hdr.ethernet.dstAddr;
@@ -183,7 +183,7 @@ control MyIngress(inout headers hdr,
         size = 1024;
         default_action = NoAction();
     }
-    
+
     apply {
         if (hdr.ipv4.isValid()) {
             ipv4_lpm.apply();
@@ -198,7 +198,7 @@ control MyIngress(inout headers hdr,
 control MyEgress(inout headers hdr,
                  inout metadata meta,
                  inout standard_metadata_t standard_metadata) {
-    action add_swtrace(switchID_t swid) { 
+    action add_swtrace(switchID_t swid) {
         /*
         * TODO: add logic to:
         - Increment hdr.mri.count by 1
@@ -212,21 +212,21 @@ control MyEgress(inout headers hdr,
     }
 
     table swtrace {
-        actions        = { 
+        actions        = {
             add_swtrace;
             NoAction;
         }
 
-        default_action =  NoAction();      
+        default_action =  NoAction();
     }
-    
+
     apply {
         /*
         * TODO: add logic to:
         * - If hdr.mri is valid:
         *   - Apply table swtrace
         */
-	swtrace.apply();
+        swtrace.apply();
     }
 }
 
@@ -236,10 +236,10 @@ control MyEgress(inout headers hdr,
 
 control MyComputeChecksum(inout headers hdr, inout metadata meta) {
      apply {
-	update_checksum(
-	    hdr.ipv4.isValid(),
+        update_checksum(
+            hdr.ipv4.isValid(),
             { hdr.ipv4.version,
-	      hdr.ipv4.ihl,
+              hdr.ipv4.ihl,
               hdr.ipv4.diffserv,
               hdr.ipv4.totalLen,
               hdr.ipv4.identification,

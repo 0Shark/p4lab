@@ -1,12 +1,18 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import sys
-import struct
 
-from scapy.all import sniff, sendp, hexdump, get_if_list, get_if_hwaddr
-from scapy.all import Packet, IPOption
-from scapy.all import PacketListField, ShortField, IntField, LongField, BitField, FieldListField, FieldLenField
-from scapy.all import IP, UDP, Raw
+from scapy.all import (
+    FieldLenField,
+    IntField,
+    IPOption,
+    Packet,
+    PacketListField,
+    ShortField,
+    get_if_list,
+    sniff
+)
 from scapy.layers.inet import _IPOption_HDR
+
 
 def get_if():
     ifs=get_if_list()
@@ -16,7 +22,7 @@ def get_if():
             iface=i
             break;
     if not iface:
-        print "Cannot find eth0 interface"
+        print("Cannot find eth0 interface")
         exit(1)
     return iface
 
@@ -40,15 +46,15 @@ class IPOption_MRI(IPOption):
                                    count_from=lambda pkt:(pkt.count*1)) ]
 
 def handle_pkt(pkt):
-    print "got a packet"
+    print("got a packet")
     pkt.show2()
 #    hexdump(pkt)
     sys.stdout.flush()
 
 
 def main():
-    iface = 'h2-eth0'
-    print "sniffing on %s" % iface
+    iface = 'eth0'
+    print("sniffing on %s" % iface)
     sys.stdout.flush()
     sniff(filter="udp and port 4321", iface = iface,
           prn = lambda x: handle_pkt(x))

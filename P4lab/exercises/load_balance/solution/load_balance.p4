@@ -59,7 +59,7 @@ parser MyParser(packet_in packet,
                 out headers hdr,
                 inout metadata meta,
                 inout standard_metadata_t standard_metadata) {
-    
+
     state start {
         transition parse_ethernet;
     }
@@ -103,14 +103,14 @@ control MyIngress(inout headers hdr,
     }
     action set_ecmp_select(bit<16> ecmp_base, bit<32> ecmp_count) {
         hash(meta.ecmp_select,
-	    HashAlgorithm.crc16,
-	    ecmp_base,
-	    { hdr.ipv4.srcAddr,
-	      hdr.ipv4.dstAddr,
+            HashAlgorithm.crc16,
+            ecmp_base,
+            { hdr.ipv4.srcAddr,
+              hdr.ipv4.dstAddr,
               hdr.ipv4.protocol,
               hdr.tcp.srcPort,
               hdr.tcp.dstPort },
-	    ecmp_count);
+            ecmp_count);
     }
     action set_nhop(bit<48> nhop_dmac, bit<32> nhop_ipv4, bit<9> port) {
         hdr.ethernet.dstAddr = nhop_dmac;
@@ -153,7 +153,7 @@ control MyIngress(inout headers hdr,
 control MyEgress(inout headers hdr,
                  inout metadata meta,
                  inout standard_metadata_t standard_metadata) {
-    
+
     action rewrite_mac(bit<48> smac) {
         hdr.ethernet.srcAddr = smac;
     }
@@ -181,10 +181,10 @@ control MyEgress(inout headers hdr,
 
 control MyComputeChecksum(inout headers hdr, inout metadata meta) {
      apply {
-	update_checksum(
-	    hdr.ipv4.isValid(),
+        update_checksum(
+            hdr.ipv4.isValid(),
             { hdr.ipv4.version,
-	      hdr.ipv4.ihl,
+              hdr.ipv4.ihl,
               hdr.ipv4.diffserv,
               hdr.ipv4.totalLen,
               hdr.ipv4.identification,
