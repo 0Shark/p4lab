@@ -92,7 +92,7 @@ A complete `load_balance.p4` will contain the following components:
     > and recomputation controls.  These are not necessary for this tutorial
     > and are replaced with instantiations of empty controls.
 
-## Step 3: Run your solution
+## Step 3: Ru  n your solution
 
 Follow the instructions from Step 1.  This time, your message from
 `h1` should be delivered to `h2` or `h3`. If you send several
