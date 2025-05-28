@@ -330,26 +330,27 @@ control MyIngress(inout headers hdr,
                 /* drop if source ToR */
                 hula_src.apply();
             }
-
-        }else if (hdr.ipv4.isValid()){
-            bit<16> flow_hash;
+        } else if (hdr.ipv4.isValid()){
+            bit<32> flow_hash;
             hash(
                 flow_hash, 
-                HashAlgorithm.crc16, 
-                16w0, 
+                HashAlgorithm.crc16,
+                32w0, 
                 { hdr.ipv4.srcAddr, hdr.ipv4.dstAddr, hdr.udp.srcPort}, 
-                32w65536);
+                32w65536
+            );
 
-            /* TODO:
-             * - Remove drop();
-             * - Read nexthop port from flow_port_reg for the flow
-             *   using flow_hash into a temporary variable
-             * - if port==0,
-             *  - apply hula_nhop table to get next hop for destination ToR 
-             *  - write the next hop into the flow_port_reg register indexed by flow_hash
-             * - else: write port into standard_metadata.egress_spec
-             */
-            drop();
+            bit<16> port;
+            flow_port_reg.read(port, flow_hash);
+
+            if (port == 0) {
+                // next hop for destination ToR
+                hula_nhop.apply();
+                bit<16> next_hop = (bit<16>)standard_metadata.egress_spec;
+                flow_port_reg.write(flow_hash, next_hop);
+            } else {
+                standard_metadata.egress_spec = (bit<9>)port;
+            }
 
             /* set the right dmac so that ping and iperf work */
             dmac.apply();
@@ -371,12 +372,13 @@ control MyEgress(inout headers hdr,
                  inout metadata meta,
                  inout standard_metadata_t standard_metadata) {
     apply {
-        /* TODO:
-         * if hula header is valid and this is forward path (hdr.hula.dir==0)
-         * check whether the qdepth in hula is smaller than 
-         * (qdepth_t)standard_metadata.deq_qdepth
-         * if so, then update hdr.hula.qdepth
-         */
+        //hula header is valid and forward path
+        if (hdr.hula.isValid() && hdr.hula.dir == 0) {
+            // hula qdepth greater than curr queue depth
+            if (hdr.hula.qdepth < (qdepth_t)standard_metadata.deq_qdepth) {
+                hdr.hula.qdepth = (qdepth_t)standard_metadata.deq_qdepth;
+            }
+        }
     }
 }
 

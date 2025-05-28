@@ -28,7 +28,7 @@ class AppController:
 
         print('\n'.join(entries))
         p = subprocess.Popen(['simple_switch_CLI', '--thrift-port', str(thrift_port)], stdin=subprocess.PIPE)
-        p.communicate(input='\n'.join(entries))
+        p.communicate(input='\n'.join(entries).encode())
 
     def read_register(self, register, idx, thrift_port=9090, sw=None):
         if sw: thrift_port = sw.thrift_port
